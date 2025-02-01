@@ -9,7 +9,7 @@ I modelli MIL possono seguire due approcci principali:
 
 In questo laboratorio ci concentriamo sulla Multiple-Instance Classification, ma esistono anche tecniche di Multiple-Instance Regression e Multiple-Instance Clustering.
 
-##Parte 1 del Lab - MIL su MNIST
+## Parte 1 del Lab - MIL su MNIST
 
 1. Task 1: Run del codice che applica un generico classificatore MIL al dataset MNIST, dove ogni bag contiene istanze (patches) multiple. Il modello, date le istanze di un bag, estrae le loro features/embeddings con un *feature extractor*, aggrega le features in un singolo feature vector del bag tramite *mean o max pooling* e con un *layer fully_connected* e un *layer di sigmoid activation* produce una label binaria (0 o 1).
 2. Task 2: Modifica del codice che aumenta il numero di istanze positive di un bag e testa le tecniche si mean e max pooling. Si analizza come questi cambiamenti influenzino la performance del modello (accuracy, precision, recall)
