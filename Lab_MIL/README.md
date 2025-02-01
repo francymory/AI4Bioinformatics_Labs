@@ -11,7 +11,7 @@ In questo laboratorio ci concentriamo sulla Multiple-Instance Classification, ma
 
 ## Parte 1 del Lab - MIL su MNIST
 
-1. Task 1: Run del codice che applica un generico classificatore MIL al dataset MNIST, dove ogni bag contiene istanze (patches) multiple. Il modello, date le istanze di un bag, estrae le loro features/embeddings con un *feature extractor*, aggrega le features in un singolo feature vector del bag tramite *mean o max pooling* e con un *layer fully_connected* e un *layer di sigmoid activation* produce una label binaria (0 o 1).
+1. Task 1: Run del codice che applica un semplice classificatore MIL al dataset MNIST, dove ogni bag contiene istanze (patches) multiple. Gli step applicati sono i seguenti: date le istanze di un bag, un *feature extractor* pre-addestrato su MNIST estrae le loro features/embedding, che vengono poi aggregate in un singolo feature vector del bag tramite *mean o max pooling*. Il modello MIL, costituito da un *layer fully_connected* e un *layer di sigmoid activation* prende in input gli embedding dei bag e produce una label binaria (0 o 1) su ogni bag.
 2. Task 2: Modifica del codice che aumenta il numero di istanze positive di un bag e testa le tecniche si mean e max pooling. Si analizza come questi cambiamenti influenzino la performance del modello (accuracy, precision, recall)
 3. Task 3: Modifica del codice per supportare la Multi_class classification, dove le labels dei bag vanno da 0 a 9. 
 
