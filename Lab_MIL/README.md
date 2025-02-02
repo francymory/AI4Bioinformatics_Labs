@@ -11,9 +11,11 @@ In questo laboratorio ci concentriamo sulla Multiple-Instance Classification, ma
 
 ## Parte 1 del Lab - MIL su MNIST
 
-1. Task 1: Run del codice che applica un semplice classificatore MIL al dataset MNIST, dove ogni bag contiene istanze (patches) multiple. Gli step applicati sono i seguenti: date le istanze di un bag, un *Feature extractor* pre-addestrato su MNIST estrae le loro features/embedding, che vengono poi aggregate in un singolo feature vector del bag tramite *Mean o Max pooling*. Il modello MIL, costituito da un *layer Fully_connected* e un *layer di Sigmoid activation*, prende in input gli embedding dei bag e produce una label binaria (0 o 1) su ogni bag.
+### Task 1: 
+Run del codice che applica un semplice classificatore MIL al dataset MNIST, dove ogni bag contiene istanze (patches) multiple. Gli step applicati sono i seguenti: date le istanze di un bag, un *Feature extractor* pre-addestrato su MNIST estrae le loro features/embedding, che vengono poi aggregate in un singolo feature vector del bag tramite *Mean o Max pooling*. Il modello MIL, costituito da un *layer Fully_connected* e un *layer di Sigmoid activation*, prende in input gli embedding dei bag e produce una label binaria (0 o 1) su ogni bag.
    
-2. Task 2: Modifica del codice che aumenta il numero di istanze positive di un bag e testa le tecniche di mean e max pooling. Si analizza come questi cambiamenti influenzino la performance del modello (accuracy, precision, recall).
+### Task 2: 
+Modifica del codice che aumenta il numero di istanze positive di un bag e testa le tecniche di mean e max pooling. Si analizza come questi cambiamenti influenzino la performance del modello (accuracy, precision, recall).
 
    Step:
    - Ho creato un nuovo dataset dove ho aumentato il numero di istanze positive in una bag a 7.
@@ -25,13 +27,24 @@ In questo laboratorio ci concentriamo sulla Multiple-Instance Classification, ma
    - Allendando e testando il modello sul nuovo dataset, sia con Meanpooling, sia con Maxpooling si verifica un notevole miglioramento della performance del modello in tutte e tre le metriche.
 
    
-2. Task 3: Modifica del codice per supportare la Multi-Class classification, dove le labels dei bag vanno da 0 a 9.
+### Task 3:
+Modifica del codice per supportare la Multi-Class classification, dove le labels dei bag vanno da 0 a 9.
 
    Step:
    - Ho scelto come regola di MIL Multi-Class classification la Majority-Rule: il bag prende la label della classe di patch più frequente nel bag. 
    - Ho quindi creato un dataset multiclasse, dove un bag ha più della metà di patch della label del bag stesso, e le restanti patch sono di classe randomica.
    - Ho modificato il MIL Classifier per renderlo multiclasse, sostituendo il Fully-connected layer che dall'embedding produceva un valore, con dei *layer lineari* che dato l'embedding del bag producono 10 valori (uno per ogni possibile classe). Ho inoltre sostituito la Sigmoid activation, con la *Softmax* usando la *CrossEntropy loss* nell'addestramento, che tramuta i 10 valori in un vettore di probabiltà, dove l'indice del vettore con la probabilità maggiore è la classe di predizione.
    - Ho quindi allenato e testato due classificatori multiclasse sul dataset multiclasse, uno che utilizza il Meanpooling per aggregare gli embedding delle feature, l'altro che sfrutta il Maxpooling.
+  
+   Osservazioni:
+   - L'Accuracy del classificatore con Meanpooling è decisamente più elevata rispetto a quella calcolata per il classificatore con Maxpooling.
+
+### Conclusioni:
+-Classificazione Binaria MIL: si osserva che, aumentando il numero di istanze positive in un bag, diventa più semplice classificarlo come positivo. Inoltre, l'uso del Maxpooling si rivela più efficace per l'aggregazione delle feature, poiché si concentra sui valori più alti, catturando meglio la presenza di un'istanza positiva nel bag (ad esempio, un tumore).
+-Classificazione Multi-Classe MIL con Majority-Rule: in questo caso, la tecnica di Maxpooling risulta meno efficace rispetto al Meanpooling. Questo perché, selezionando solo le feature con valore più elevato, Maxpooling enfatizza le istanze di classe con feature più forti, piuttosto che quelle più frequenti, portando a classificazioni meno accurate.
+  
+   
+   
 
 
 
