@@ -60,7 +60,8 @@ Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performan
 #### DSMIL: 
 - Modulo Dual-stream:
   1. Instance-level stream: Ogni patch della WSI viene trasformata in un embedding vettoriale usando un Feature Extractor pre-addestrato (CNN) con una loss contrastiva. Si classificano le singole patch dati i loro embedding e si applica MaxPooling per selezionare la patch più critica.
-  2. Bag-level stream: Attraverso un meccanismo di Self-attention si calcolano i pesi delle singole patch e si genera l'embedding finale della WSI, dove le patch più vicine alla critica avranno peso maggiore.
+  2. Bag-level stream: Attraverso un meccanismo di self-attention si calcolano i pesi delle singole patch rispetto alla patch critica e si genera l'embedding finale della WSI, dove le patch più vicine alla critica avranno peso maggiore.
+- L'Accuracy migliore di testing dopo 200 epoche di training è di: 0,86719
 
 #### ABMIL:
 - Ogni patch di una WSI viene trasformata in un embedding/vettore di features usando una CNN pre-addestrata. Le features estratte vengono proiettate in uno spazio latente tramite un MLP, dove viene calcolata l'importanza di ciascuna patch attraverso un meccanismo di attenzione. Viene calcolato l'embedding globale della WSI calcolando la somma pesata dall'attenzione delle feature delle patch.
