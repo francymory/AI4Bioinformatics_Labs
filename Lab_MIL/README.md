@@ -5,7 +5,7 @@ Il Multi-Instance Learning (MIL) è una tecnica di apprendimento supervisionato 
 
 I modelli MIL possono seguire due approcci principali:
 1. Instance-Based Approach: Si assume che un bag classificato come positivo contenga almeno un'istanza positiva, mentre un bag negativo contenga tutte istanze negative. Per classificare il bag, si classificano prima tutte le istanze individualmente, poi il punteggio del bag è ottenuto tramite un'operazione di pooling (modelli: MaxPooling, MeanPooling).
-2. Embedding-Based Approach: Le istanze vengono trasformate in uno spazio di embedding e poi aggregate (ad esempio con tecniche di attention) per formare una rappresentazione/embedding finale del bag che verrà poi classificato (modelli: DSMIL, BUFFERMIL, ABMIL, TRANSMIL).
+2. Embedding-Based Approach: Le istanze vengono trasformate in uno spazio di embedding e poi aggregate (ad esempio con tecniche di attention o pooling) per formare una rappresentazione/embedding finale del bag che verrà poi classificato (modelli: DSMIL, BUFFERMIL, ABMIL, TRANSMIL).
 
 In questo laboratorio ci concentriamo sulla Multiple-Instance Classification, ma esistono anche tecniche di Multiple-Instance Regression e Multiple-Instance Clustering.
 
@@ -44,8 +44,16 @@ Modifica del codice per supportare la Multi-Class classification, dove le labels
 - Classificazione Multi-Classe MIL con Majority-Rule: in questo caso, la tecnica di Maxpooling risulta meno efficace rispetto al Meanpooling. Questo perché, selezionando solo le feature con valore più elevato, Maxpooling enfatizza le istanze di classe con feature più forti, piuttosto che quelle più frequenti, portando a classificazioni meno accurate.
   
    
-   
+## Parte 2 del Lab - MIL sulle WSI (Camelyon16 dataset)
 
+Le WSI (Whole Slide Images) sono immagini digitali ad alta risoluzione ottenute dalla scansione di interi vetrini istologici. Poichè sono troppo grandi per essere analizzate singolarmente, solitamente vengono utilizzate delle tecniche di pre-processing (Otsu, CLAM) che individuano le regioni significative di tessuto, e da esse vengono estratte delle *patch*, che rappresentano porzioni specifiche del tessuto a una certa risoluzione.
 
+Nella classificazione MIL, l'insieme delle patch (istanze) di una WSI (bag) possono essere processate da un feature extractor, gli embedding delle patch vengono aggregati con meccanismi di attention o pooling, e il classificatore effettua la predizione finale sulla WSI. (In modo analogo a come avveniva per il dataset MNIST).
+
+### Task 4: 
+Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performance.
+
+### Task 5:
+Visualizza gli attention weights a livello di patch del modello DSMIL.
 
 
