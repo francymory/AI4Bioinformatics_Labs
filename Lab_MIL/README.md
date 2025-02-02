@@ -65,6 +65,7 @@ Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performan
 
 #### ABMIL:
 - Ogni patch di una WSI viene trasformata in un embedding/vettore di features usando una CNN pre-addestrata. Le features estratte vengono proiettate in uno spazio latente tramite un MLP, dove viene calcolata l'importanza di ciascuna patch attraverso un meccanismo di attenzione. Viene calcolato l'embedding globale della WSI calcolando la somma pesata dall'attenzione delle feature delle patch.
+- L'Accuracy migliore di testing dopo 200 epoche di training è di: 0.89062
 
 #### TRANSMIL:
 - Le patch della WSI vengono trasformate in embeddings attraverso una CNN pre-addestrata, agli embedding vengono aggiunte le informazioni spaziali delle patch nella WSI attraverso il Positional Encoding. Un Transformer Encoder modella le dipendenze tra tutte le patch tramite self-attention, permettendo di catturare relazioni tra patch distanti nella WSI. Il classification (CLS) token dell'Encoder contiene la rappresentazione globale della WSI.
