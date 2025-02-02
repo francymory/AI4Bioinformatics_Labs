@@ -53,6 +53,20 @@ In questo Lab per effettuare la classificazione MIL su WSI di Camelyon16, l'insi
 ### Task 4: 
 Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performance.
 
+
+#### Maxpooling e Meanpooling:
+- Un Feature Extractor estrae gli embedding delle singole patch di una WSI, gli embedding vengono poi aggregati in un unico embedding della WSI tramite Maxpooling o Meanpooling.
+  
+#### DSMIL: 
+- Modulo Dual-stream:
+  1. Instance-level stream: Ogni patch della WSI viene trasformata in un embedding vettoriale usando un Feature Extractor pre-addestrato (CNN) con una loss contrastiva. Si classificano le singole patch dati i loro embedding e si applica MaxPooling per selezionare la patch più critica.
+  2. Bag-level stream: Attraverso un meccanismo di Self-attention si calcolano i pesi delle singole patch e si genera l'embedding finale della WSI, dove le patch più vicine alla critica avranno peso maggiore.
+
+#### ABMIL:
+
+ 
+
+
 ### Task 5:
 Visualizza gli attention weights a livello di patch del modello DSMIL.
 
