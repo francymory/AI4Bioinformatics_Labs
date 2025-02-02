@@ -46,9 +46,9 @@ Modifica del codice per supportare la Multi-Class classification, dove le labels
    
 ## Parte 2 del Lab - MIL sulle WSI (Camelyon16 dataset)
 
-Le WSI (Whole Slide Images) sono immagini digitali ad alta risoluzione ottenute dalla scansione di interi vetrini istologici. Poichè sono troppo grandi per essere analizzate singolarmente, solitamente vengono utilizzate delle tecniche di pre-processing (Otsu, CLAM) che individuano le regioni significative di tessuto, e da esse vengono estratte delle *patch*, che rappresentano porzioni specifiche del tessuto a una certa risoluzione.
+Le WSI (Whole Slide Images) sono immagini digitali ad alta risoluzione ottenute dalla scansione di interi vetrini istologici. Poichè sono troppo grandi per essere analizzate singolarmente, solitamente vengono utilizzate delle tecniche di pre-processing, che individuano le regioni significative di tessuto (in questo Lab è stato usato CLAM, che sfrutta Otsu per rimuovere il background), e da esse vengono estratte delle *patch*, che rappresentano porzioni specifiche del tessuto a una certa risoluzione.
 
-Nella classificazione MIL, l'insieme delle patch (istanze) di una WSI (bag) possono essere processate da un feature extractor, gli embedding delle patch vengono aggregati con meccanismi di attention o pooling, e il classificatore effettua la predizione finale sulla WSI. (In modo analogo a come avveniva per il dataset MNIST).
+In questo Lab per effettuare la classificazione MIL su WSI di Camelyon16, l'insieme delle patch (istanze) di una WSI (bag) viene prima processato da un feature extractor (DINO), gli embedding delle patch vengono poi aggregati con meccanismi di attention o pooling a seconda del modello, e il classificatore effettua la predizione finale sulla WSI (c'è o meno la metastasi). (In modo analogo a come avveniva per il dataset MNIST).
 
 ### Task 4: 
 Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performance.
