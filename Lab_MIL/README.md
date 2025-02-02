@@ -63,8 +63,10 @@ Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performan
   2. Bag-level stream: Attraverso un meccanismo di Self-attention si calcolano i pesi delle singole patch e si genera l'embedding finale della WSI, dove le patch più vicine alla critica avranno peso maggiore.
 
 #### ABMIL:
+- Ogni patch di una WSI viene trasformata in un embedding/vettore di features usando una CNN pre-addestrata. Le features estratte vengono proiettate in uno spazio latente tramite un MLP, dove viene calcolata l'importanza di ciascuna patch attraverso un meccanismo di attenzione. Viene calcolato l'embedding globale della WSI calcolando la somma pesata dall'attenzione delle feature delle patch.
 
- 
+#### TRANSMIL:
+- Le patch della WSI vengono trasformate in embeddings attraverso una CNN pre-addestrata, agli embedding vengono aggiunte le informazioni spaziali delle patch nella WSI attraverso il Positional Encoding. Un Transformer Encoder modella le dipendenze tra tutte le patch tramite self-attention, permettendo di catturare relazioni tra patch distanti nella WSI. Il classification (CLS) token dell'Encoder contiene la rappresentazione globale della WSI.
 
 
 ### Task 5:
