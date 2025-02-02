@@ -15,13 +15,23 @@ In questo laboratorio ci concentriamo sulla Multiple-Instance Classification, ma
    
 2. Task 2: Modifica del codice che aumenta il numero di istanze positive di un bag e testa le tecniche di mean e max pooling. Si analizza come questi cambiamenti influenzino la performance del modello (accuracy, precision, recall).
 
+   Step:
+   - Ho creato un nuovo dataset dove ho aumentato il numero di istanze positive in una bag a 7.
+   - Ho mantenuto lo stesso Feature Extractor e MIL Classifier per classificazione binaria del task precedente.
+   - Ho allenato e testato i 3 nuovi modelli, oltre al precedente sul vecchio dataset e Meanpooling: uno sul vecchio dataset e Maxpooling, uno sul nuovo dataset e Meanpooling, l'ultimo sul nuovo dataset e Maxpooling.
+   
    Osservazioni:
    - Allenando e testando il modello sul vecchio dataset utilizzando il Maxpooling nel Feature Extractor, si nota un leggero miglioramento di accuracy e recall e un notevole miglioramento della precision.
-     
    - Allendando e testando il modello sul nuovo dataset, sia con Meanpooling, sia con Maxpooling si verifica un notevole miglioramento della performance del modello in tutte e tre le metriche.
 
    
-3. Task 3: Modifica del codice per supportare la Multi_class classification, dove le labels dei bag vanno da 0 a 9. 
+2. Task 3: Modifica del codice per supportare la Multi-Class classification, dove le labels dei bag vanno da 0 a 9.
+
+   Step:
+   - Ho scelto come regola di MIL Multi-Class classification la Majority-Rule: il bag prende la label della classe di patch più frequente nel bag. 
+   - Ho quindi creato un dataset multiclasse, dove un bag ha più della metà di patch della label del bag stesso, e le restanti patch sono di classe randomica.
+   - Ho modificato il MIL Classifier per renderlo multiclasse, sostituendo il Fully-connected layer che dall'embedding produceva un valore, con dei *layer lineari* che dato l'embedding del bag producono 10 valori (uno per ogni possibile classe). Ho inoltre sostituito la Sigmoid activation, con la *Softmax* usando la *CrossEntropy loss* nell'addestramento, che tramuta i 10 valori in un vettore di probabiltà, dove l'indice del vettore con la probabilità maggiore è la classe di predizione.
+   - Ho quindi allenato e testato due classificatori multiclasse sul dataset multiclasse, uno che utilizza il Meanpooling per aggregare gli embedding delle feature, l'altro che sfrutta il Maxpooling.
 
 
 
