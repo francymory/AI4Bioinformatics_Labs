@@ -12,7 +12,11 @@ In questo laboratorio ci concentriamo sulla Multiple-Instance Classification, ma
 ## Parte 1 del Lab - MIL su MNIST
 
 ### Task 1: 
-Run del codice che applica un semplice classificatore MIL al dataset MNIST, dove ogni bag contiene istanze (patches) multiple. Gli step applicati sono i seguenti: date le istanze di un bag, un *Feature extractor* pre-addestrato su MNIST estrae le loro features/embedding, che vengono poi aggregate in un singolo feature vector del bag tramite *Mean o Max pooling*. Il modello MIL, costituito da un *layer Fully_connected* e un *layer di Sigmoid activation*, prende in input gli embedding dei bag e produce una label binaria (0 o 1) su ogni bag.
+Run del codice che applica un semplice classificatore MIL al dataset MNIST, dove ogni bag contiene istanze (patches) multiple.
+
+  Steps:
+  - Date le istanze di un bag, un *Feature extractor* pre-addestrato su MNIST estrae le loro features/embedding, che vengono poi aggregate in un singolo feature vector del bag tramite *Mean o Max pooling*.
+  -  Il modello MIL, costituito da un *layer Fully_connected* e un *layer di Sigmoid activation*, prende in input gli embedding dei bag e produce una label binaria (0 o 1) su ogni bag.
    
 ### Task 2: 
 Modifica del codice che aumenta il numero di istanze positive di un bag e testa le tecniche di mean e max pooling. Si analizza come questi cambiamenti influenzino la performance del modello (accuracy, precision, recall).
@@ -30,7 +34,7 @@ Modifica del codice che aumenta il numero di istanze positive di un bag e testa 
 ### Task 3:
 Modifica del codice per supportare la Multi-Class classification, dove le labels dei bag vanno da 0 a 9.
 
-   Step:
+   Steps:
    - Ho scelto come regola di MIL Multi-Class classification la Majority-Rule: il bag prende la label della classe di patch più frequente nel bag. 
    - Ho quindi creato un dataset multiclasse, dove un bag ha più della metà di patch della label del bag stesso, e le restanti patch sono di classe randomica.
    - Ho modificato il MIL Classifier per renderlo multiclasse, sostituendo il Fully-connected layer che dall'embedding produceva un valore, con dei *layer lineari* che dato l'embedding del bag producono 10 valori (uno per ogni possibile classe). Ho inoltre sostituito la Sigmoid activation, con la *Softmax* usando la *CrossEntropy loss* nell'addestramento, che tramuta i 10 valori in un vettore di probabiltà, dove l'indice del vettore con la probabilità maggiore è la classe di predizione.
@@ -81,9 +85,13 @@ Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performan
 
 #### TRANSMIL:
 - Agli embedding delle patch vengono aggiunte le informazioni spaziali delle patch nella WSI attraverso il Positional Encoding (classe PPEG). Un Transformer Encoder modella le dipendenze tra tutte le patch tramite layers di self-attention, permettendo di catturare relazioni tra patch distanti nella WSI. Il classification (CLS) token dell'Encoder contiene la rappresentazione globale della WSI, che viene passara a un layer Fully-connected per ottenere le predizioni finali.
-- L'Accuracy migliore di testing con 50 epoche di training è di: 
-- L'AUC migliore: 
-- Il tempo d'esecuzione: 
+- L'Accuracy migliore di testing con 50 epoche di training è di: 0.89844
+- L'AUC migliore: 0.90169
+- Il tempo d'esecuzione: 27 minuti
+
+#### Conclusioni:
+ABMIL, DSMIL, MaxPooling e TRANSMIL danno risultati competitivi di Accuracy (capacità complessiva del modello di fare previsioni corrette) e AUC (probabilità che il modello classifichi correttamente una coppia di istanze, dove una appartiene alla classe positiva e l'altra alla classe negativa), ma TRANSMIL ha un tempo d'esecuzione decisamente superiore.
+MeanPooling è il modello che dà risultati di Accuracy e AUC peggiori.
 
 
 ### Task 5:
@@ -92,6 +100,12 @@ Visualizza gli attention weights a livello di patch del modello DSMIL.
    Steps:
    - Disattivo il dropout per avere lo stesso numero di patches e attention weights.
    - Ogni 10 epoche di training del modello DSMIL, si visualizza una heatmap della prima WSI del set di testing.
-   - La heatmap è uno scatterplot che mostra le patch della WSI sotto forma di punti, colorati in base ai pesi di attenzione corrispondenti, i quali sono calcolati dopo una forward pass del modello sulla WSI. 
+   - La heatmap è uno scatterplot che mostra le patch della WSI sotto forma di punti, colorati in base ai pesi di attenzione corrispondenti, i quali sono calcolati dopo una forward pass del modello sulla WSI.
+
+   Osservazioni:
+Si può notare una evoluzione della heatmap dovuta al training del modello:
+   - Nelle prime epoche molte patch sono ritenute importanti e quindi colorate di rosso o giallo, questo è dovuto al fatto che il modello sta ancora esplorando e distrubuisce l'attenzione su molte patch.
+   - Nelle ultime epoche ci sono solo poche patch rosse, perchè il modello si specializza e concentra l'attenzione solo su alcune patch, quelle più informative per la classificazione finale, e visto il funzionamento di DSMIL, sono proprio le patch più vicine alla patch "critica".
+     
 
 
