@@ -81,13 +81,13 @@ Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performan
 - Le features estratte dalle patch vengono proiettate in uno spazio latente tramite un MLP (qui chiamato BClassifierABMIL) , dove viene calcolata l'importanza di ciascuna patch attraverso un meccanismo di attenzione. Viene calcolato l'embedding globale della WSI come somma pesata dall'attenzione delle feature delle patch.
 - L'Accuracy migliore di testing con 50 epoche di training è di: 0.89844
 - L'AUC migliore: 0.90599
-- Il tempo d'esecuzione: 6 minuti
+- Il tempo d'esecuzione: 6 min
 
 #### TRANSMIL:
 - Agli embedding delle patch vengono aggiunte le informazioni spaziali delle patch nella WSI attraverso il Positional Encoding (classe PPEG). Un Transformer Encoder modella le dipendenze tra tutte le patch tramite layers di self-attention, permettendo di catturare relazioni tra patch distanti nella WSI. Il classification (CLS) token dell'Encoder contiene la rappresentazione globale della WSI, che viene passara a un layer Fully-connected per ottenere le predizioni finali.
 - L'Accuracy migliore di testing con 50 epoche di training è di: 0.89844
 - L'AUC migliore: 0.90169
-- Il tempo d'esecuzione: 27 minuti
+- Il tempo d'esecuzione: 27 min
 
 #### Conclusioni:
 ABMIL, DSMIL, MaxPooling e TRANSMIL danno risultati competitivi di Accuracy (capacità complessiva del modello di fare previsioni corrette) e AUC (probabilità che il modello classifichi correttamente una coppia di istanze, dove una appartiene alla classe positiva e l'altra alla classe negativa), ma TRANSMIL ha un tempo d'esecuzione decisamente superiore.
