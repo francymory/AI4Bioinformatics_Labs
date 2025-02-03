@@ -1,7 +1,7 @@
 # Laboratorio sul MIL (Multiple-Instance Learning)
 
 ## MIL
-Il Multi-Instance Learning (MIL) è una tecnica di apprendimento supervisionato debole in cui i dati di addestramento sono organizzati in bag (insiemi di istanze) e viene assegnata una label all'intero bag piuttosto che alle singole istanze. Questo è utile in scenari in cui l'annotazione dettagliata è costosa o impraticabile, come per l'ambito medico per l'identificazione di regioni patologiche senza annotazioni a livello locale.
+Il Multiple-Instance Learning (MIL) è una tecnica di apprendimento supervisionato debole in cui i dati di addestramento sono organizzati in bag (insiemi di istanze) e viene assegnata una label all'intero bag piuttosto che alle singole istanze. Questo è utile in scenari in cui l'annotazione dettagliata è costosa o impraticabile, come per l'ambito medico per l'identificazione di regioni patologiche senza annotazioni a livello locale.
 
 I modelli MIL possono seguire due approcci principali:
 1. Instance-Based Approach: Si assume che un bag classificato come positivo contenga almeno un'istanza positiva, mentre un bag negativo contenga tutte istanze negative. Per classificare il bag, si classificano prima tutte le istanze individualmente, poi il punteggio del bag è ottenuto tramite un'operazione di pooling (esempi di modelli: MaxPooling, MeanPooling).
@@ -21,14 +21,14 @@ Run del codice che applica un semplice classificatore MIL al dataset MNIST, dove
 ### Task 2: 
 Modifica del codice che aumenta il numero di istanze positive di un bag e testa le tecniche di mean e max pooling. Si analizza come questi cambiamenti influenzino la performance del modello (accuracy, precision, recall).
 
-   Step:
+   Steps:
    - Ho creato un nuovo dataset dove ho aumentato il numero di istanze positive in una bag a 7.
    - Ho mantenuto lo stesso Feature Extractor e MIL Classifier per classificazione binaria del task precedente.
    - Ho allenato e testato i 3 nuovi modelli, oltre al precedente sul vecchio dataset e Meanpooling: uno sul vecchio dataset e Maxpooling, uno sul nuovo dataset e Meanpooling, l'ultimo sul nuovo dataset e Maxpooling.
    
    Osservazioni:
-   - Allenando e testando il modello sul vecchio dataset utilizzando il Maxpooling nel Feature Extractor, si nota un leggero miglioramento di accuracy e recall e un notevole miglioramento della precision.
-   - Allendando e testando il modello sul nuovo dataset, sia con Meanpooling, sia con Maxpooling si verifica un notevole miglioramento della performance del modello in tutte e tre le metriche.
+   - Allenando e testando il modello sul vecchio dataset utilizzando il Maxpooling invece del Meanpooling nel Feature Extractor, si nota un leggero miglioramento di accuracy e recall e un notevole miglioramento della precision.
+   - Allenando e testando il modello sul nuovo dataset, sia con Meanpooling, sia con Maxpooling si verifica un notevole miglioramento della performance del modello in tutte e tre le metriche.
 
    
 ### Task 3:
@@ -36,8 +36,8 @@ Modifica del codice per supportare la Multi-Class classification, dove le labels
 
    Steps:
    - Ho scelto come regola di MIL Multi-Class classification la Majority-Rule: il bag prende la label della classe di patch più frequente nel bag. 
-   - Ho quindi creato un dataset multiclasse, dove un bag ha più della metà di patch della label del bag stesso, e le restanti patch sono di classe randomica.
-   - Ho modificato il MIL Classifier per renderlo multiclasse, sostituendo il Fully-connected layer che dall'embedding produceva un valore, con dei *layer lineari* che dato l'embedding del bag producono 10 valori (uno per ogni possibile classe). Ho inoltre sostituito la Sigmoid activation, con la *Softmax* usando la *CrossEntropy loss* nell'addestramento, che tramuta i 10 valori in un vettore di probabiltà, dove l'indice del vettore con la probabilità maggiore è la classe di predizione.
+   - Ho quindi creato un dataset multiclasse, dove un bag ha più della metà di patch della classe del bag, e le restanti patch di classe randomica.
+   - Ho modificato il MIL Classifier per renderlo multiclasse, sostituendo il Fully-connected layer che dall'embedding produceva un valore, con dei *layer lineari* che dato l'embedding del bag producono 10 valori (uno per ogni possibile classe). Ho inoltre sostituito la Sigmoid activation, con la *Softmax* usando la *CrossEntropy loss* nell'addestramento, che tramuta i 10 valori in un vettore di probabilità, dove l'indice del vettore con la probabilità maggiore è la classe di predizione.
    - Ho quindi allenato e testato due classificatori multiclasse sul dataset multiclasse, uno che utilizza il Meanpooling per aggregare gli embedding delle feature, l'altro che sfrutta il Maxpooling.
   
    Osservazioni:
@@ -71,7 +71,7 @@ Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performan
   
 #### DSMIL: 
 - Modulo Dual-stream:
-  1. Instance-level stream: Le features delle patch della WSI vengono trasformati in embedding significativi usando un Feature Extractor pre-addestrato con una loss contrastiva. Si classificano le singole patch dati i loro embedding e si applica MaxPooling per selezionare la patch più critica.
+  1. Instance-level stream: Le features delle patch della WSI vengono trasformate in embedding significativi usando un Feature Extractor pre-addestrato con una loss contrastiva. Si classificano le singole patch dati i loro embedding e si applica MaxPooling per selezionare la patch più critica.
   2. Bag-level stream: Attraverso un meccanismo di self-attention si calcolano i pesi delle singole patch rispetto alla patch critica e si genera l'embedding finale della WSI, dove le patch più vicine alla critica avranno peso maggiore.
 - L'Accuracy migliore di testing con 50 epoche di training è di: 0.83594
 - L'AUC migliore: 0.84323
@@ -84,7 +84,7 @@ Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performan
 - Il tempo d'esecuzione: 6 min
 
 #### TRANSMIL:
-- Agli embedding delle patch vengono aggiunte le informazioni spaziali delle patch nella WSI attraverso il Positional Encoding (classe PPEG). Un Transformer Encoder modella le dipendenze tra tutte le patch tramite layers di self-attention, permettendo di catturare relazioni tra patch distanti nella WSI. Il classification (CLS) token dell'Encoder contiene la rappresentazione globale della WSI, che viene passara a un layer Fully-connected per ottenere le predizioni finali.
+- Agli embedding delle patch vengono aggiunte le informazioni spaziali delle patch nella WSI attraverso il Positional Encoding (classe PPEG). Un Transformer Encoder modella le dipendenze tra tutte le patch tramite layers di self-attention, permettendo di catturare relazioni tra patch distanti nella WSI. Il classification (CLS) token dell'Encoder contiene la rappresentazione globale della WSI, che viene passata a un layer Fully-connected per ottenere le predizioni finali.
 - L'Accuracy migliore di testing con 50 epoche di training è di: 0.89844
 - L'AUC migliore: 0.90169
 - Il tempo d'esecuzione: 27 min
@@ -104,8 +104,8 @@ Visualizza gli attention weights a livello di patch del modello DSMIL.
 
    Osservazioni:
 Si può notare una evoluzione della heatmap dovuta al training del modello:
-   - Nelle prime epoche molte patch sono ritenute importanti e quindi colorate di rosso o giallo, questo è dovuto al fatto che il modello sta ancora esplorando e distrubuisce l'attenzione su molte patch.
-   - Nelle ultime epoche ci sono solo poche patch rosse, perchè il modello si specializza e concentra l'attenzione solo su alcune patch, quelle più informative per la classificazione finale, e visto il funzionamento di DSMIL, sono proprio le patch più vicine alla patch "critica".
+   - Nelle prime epoche molte patch sono ritenute importanti e quindi colorate di rosso o giallo, questo è dovuto al fatto che il modello sta ancora esplorando e distribuisce l'attenzione su molte patch.
+   - Nelle ultime epoche ci sono poche patch rosse, perchè il modello si specializza e concentra l'attenzione solo su alcune patch, quelle più informative per la classificazione finale, e considerato il funzionamento di DSMIL, sono proprio le patch più vicine alla patch "critica".
      
 
 
