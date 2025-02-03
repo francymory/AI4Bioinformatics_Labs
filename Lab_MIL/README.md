@@ -45,7 +45,7 @@ Modifica del codice per supportare la Multi-Class classification, dove le labels
 
 ### Conclusioni:
 - Classificazione Binaria MIL: si osserva che, aumentando il numero di istanze positive in un bag, diventa più semplice classificarlo come positivo. Inoltre, l'uso del Maxpooling si rivela più efficace per l'aggregazione delle feature, poiché si concentra sui valori più alti, catturando meglio la presenza di un'istanza positiva nel bag (ad esempio, un tumore).
-- Classificazione Multi-Classe MIL con Majority-Rule: in questo caso, la tecnica di Maxpooling risulta meno efficace rispetto al Meanpooling. Questo perché, selezionando solo le feature con valore più elevato, Maxpooling enfatizza le istanze di classe con feature più forti, piuttosto che quelle più frequenti, portando a classificazioni meno accurate.
+- Classificazione Multi-Classe MIL con Majority-Rule: in questo caso, la tecnica di Maxpooling risulta meno efficace rispetto al Meanpooling. Questo perché, selezionando solo le feature con valore più elevato, Maxpooling enfatizza le istanze di classe con feature più forti, piuttosto che quelle più frequenti, portando a classificazioni meno accurate. Se avessi invece scelto la Max-Rule come regola di classificazione, ossia assegnare al bag la label della classe più elevata, il Maxpooling sarebbe stata una tecnica di aggregazione più significativa.
   
    
 ## Parte 2 del Lab - MIL sulle WSI (Camelyon16 dataset)
