@@ -4,7 +4,7 @@
 Il Multi-Instance Learning (MIL) è una tecnica di apprendimento supervisionato debole in cui i dati di addestramento sono organizzati in bag (insiemi di istanze) e viene assegnata una label all'intero bag piuttosto che alle singole istanze. Questo è utile in scenari in cui l'annotazione dettagliata è costosa o impraticabile, come per l'ambito medico per l'identificazione di regioni patologiche senza annotazioni a livello locale.
 
 I modelli MIL possono seguire due approcci principali:
-1. Instance-Based Approach: Si assume che un bag classificato come positivo contenga almeno un'istanza positiva, mentre un bag negativo contenga tutte istanze negative. Per classificare il bag, si classificano prima tutte le istanze individualmente, poi il punteggio del bag è ottenuto tramite un'operazione di pooling.
+1. Instance-Based Approach: Si assume che un bag classificato come positivo contenga almeno un'istanza positiva, mentre un bag negativo contenga tutte istanze negative. Per classificare il bag, si classificano prima tutte le istanze individualmente, poi il punteggio del bag è ottenuto tramite un'operazione di pooling (esempi di modelli: MaxPooling, MeanPooling).
 2. Embedding-Based Approach: Le istanze vengono trasformate in uno spazio di embedding e poi aggregate (ad esempio con tecniche di attention o pooling) per formare una rappresentazione/embedding finale del bag che verrà poi classificato (esempi di modelli: DSMIL, BUFFERMIL, ABMIL, TRANSMIL).
 
 In questo laboratorio ci concentriamo sulla Multiple-Instance Classification, ma esistono anche tecniche di Multiple-Instance Regression e Multiple-Instance Clustering.
@@ -48,14 +48,22 @@ Modifica del codice per supportare la Multi-Class classification, dove le labels
 
 Le WSI (Whole Slide Images) sono immagini digitali ad alta risoluzione ottenute dalla scansione di interi vetrini istologici. Poichè sono troppo grandi per essere analizzate singolarmente, solitamente vengono utilizzate delle tecniche di pre-processing, che individuano le regioni significative di tessuto (in questo Lab è stato usato CLAM, che sfrutta Otsu per rimuovere il background), e da esse vengono estratte delle *patch*, che rappresentano porzioni specifiche del tessuto a una certa risoluzione.
 
-In questo Lab per effettuare la classificazione MIL su WSI di Camelyon16, l'insieme delle patch (istanze) di una WSI (bag) viene prima processato da un feature extractor (DINO), gli embedding delle patch vengono poi aggregati con meccanismi di attention o pooling a seconda del modello, e il classificatore effettua la predizione finale sulla WSI (c'è o meno la metastasi). (In modo analogo a come avveniva per il dataset MNIST).
+In questo Lab per effettuare la classificazione MIL su WSI di Camelyon16, l'insieme delle patch (istanze) di una WSI (bag) viene prima processato da un feature extractor (DINO), gli embedding delle patch vengono poi aggregati con meccanismi di attention o pooling a seconda del modello, e il classificatore effettua la predizione finale sulla WSI (c'è o meno la metastasi). 
 
 ### Task 4: 
 Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performance.
 
+#### MaxPooling
+- Gli embedding estratti dalle singole patch di una WSI passano in un Fully-Connected layer che calcola lo score o predizione per ogni patch. Un operatore di Maxpooling seleziona come predizione finale il valore massimo tra le predizioni delle patch.
+- L'Accuracy migliore di testing con 50 epoche di training è di: 0.89844
+- L'AUC migliore: 0.8974
+- Il tempo d'esecuzione: 5 min 15 s
 
-#### Maxpooling e Meanpooling:
-- Un Feature Extractor estrae gli embedding delle singole patch di una WSI, gli embedding vengono poi aggregati in un unico embedding della WSI tramite Maxpooling o Meanpooling.
+#### MeanPooling
+- Anche qui gli embedding estratti dalle singole patch di una WSI passano in un Fully-Connected layer che calcola le predizioni per ogni patch. Un operatore di Meanpooling calcola poi la predizione finale come media delle predizioni di tutte le patch.
+- L'Accuracy migliore di testing con 50 epoche di training è di: 0.69531
+- L'AUC migliore: 0.61901
+- Il tempo d'esecuzione: 5 min
   
 #### DSMIL: 
 - Modulo Dual-stream:
