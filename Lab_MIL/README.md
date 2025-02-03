@@ -4,8 +4,8 @@
 Il Multi-Instance Learning (MIL) è una tecnica di apprendimento supervisionato debole in cui i dati di addestramento sono organizzati in bag (insiemi di istanze) e viene assegnata una label all'intero bag piuttosto che alle singole istanze. Questo è utile in scenari in cui l'annotazione dettagliata è costosa o impraticabile, come per l'ambito medico per l'identificazione di regioni patologiche senza annotazioni a livello locale.
 
 I modelli MIL possono seguire due approcci principali:
-1. Instance-Based Approach: Si assume che un bag classificato come positivo contenga almeno un'istanza positiva, mentre un bag negativo contenga tutte istanze negative. Per classificare il bag, si classificano prima tutte le istanze individualmente, poi il punteggio del bag è ottenuto tramite un'operazione di pooling (modelli: MaxPooling, MeanPooling).
-2. Embedding-Based Approach: Le istanze vengono trasformate in uno spazio di embedding e poi aggregate (ad esempio con tecniche di attention o pooling) per formare una rappresentazione/embedding finale del bag che verrà poi classificato (modelli: DSMIL, BUFFERMIL, ABMIL, TRANSMIL).
+1. Instance-Based Approach: Si assume che un bag classificato come positivo contenga almeno un'istanza positiva, mentre un bag negativo contenga tutte istanze negative. Per classificare il bag, si classificano prima tutte le istanze individualmente, poi il punteggio del bag è ottenuto tramite un'operazione di pooling.
+2. Embedding-Based Approach: Le istanze vengono trasformate in uno spazio di embedding e poi aggregate (ad esempio con tecniche di attention o pooling) per formare una rappresentazione/embedding finale del bag che verrà poi classificato (esempi di modelli: DSMIL, BUFFERMIL, ABMIL, TRANSMIL).
 
 In questo laboratorio ci concentriamo sulla Multiple-Instance Classification, ma esistono anche tecniche di Multiple-Instance Regression e Multiple-Instance Clustering.
 
@@ -65,7 +65,9 @@ Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performan
 
 #### ABMIL:
 - Ogni patch di una WSI viene trasformata in un embedding/vettore di features usando una CNN pre-addestrata. Le features estratte vengono proiettate in uno spazio latente tramite un MLP, dove viene calcolata l'importanza di ciascuna patch attraverso un meccanismo di attenzione. Viene calcolato l'embedding globale della WSI calcolando la somma pesata dall'attenzione delle feature delle patch.
-- L'Accuracy migliore di testing con 50 epoche di training è di:
+- L'Accuracy migliore di testing con 50 epoche di training è di: 0.89844
+- L'AUC migliore: 0.90599
+- Il tempo d'esecuzione: 6 minuti
 
 #### TRANSMIL:
 - Le patch della WSI vengono trasformate in embeddings attraverso una CNN pre-addestrata, agli embedding vengono aggiunte le informazioni spaziali delle patch nella WSI attraverso il Positional Encoding. Un Transformer Encoder modella le dipendenze tra tutte le patch tramite self-attention, permettendo di catturare relazioni tra patch distanti nella WSI. Il classification (CLS) token dell'Encoder contiene la rappresentazione globale della WSI.
