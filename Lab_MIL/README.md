@@ -61,11 +61,11 @@ Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performan
 - Modulo Dual-stream:
   1. Instance-level stream: Ogni patch della WSI viene trasformata in un embedding vettoriale usando un Feature Extractor pre-addestrato (CNN) con una loss contrastiva. Si classificano le singole patch dati i loro embedding e si applica MaxPooling per selezionare la patch più critica.
   2. Bag-level stream: Attraverso un meccanismo di self-attention si calcolano i pesi delle singole patch rispetto alla patch critica e si genera l'embedding finale della WSI, dove le patch più vicine alla critica avranno peso maggiore.
-- L'Accuracy migliore di testing dopo 200 epoche di training è di: 0,86719
+- L'Accuracy migliore di testing con 50 epoche di training è di: 
 
 #### ABMIL:
 - Ogni patch di una WSI viene trasformata in un embedding/vettore di features usando una CNN pre-addestrata. Le features estratte vengono proiettate in uno spazio latente tramite un MLP, dove viene calcolata l'importanza di ciascuna patch attraverso un meccanismo di attenzione. Viene calcolato l'embedding globale della WSI calcolando la somma pesata dall'attenzione delle feature delle patch.
-- L'Accuracy migliore di testing dopo 200 epoche di training è di: 0.89062
+- L'Accuracy migliore di testing con 50 epoche di training è di:
 
 #### TRANSMIL:
 - Le patch della WSI vengono trasformate in embeddings attraverso una CNN pre-addestrata, agli embedding vengono aggiunte le informazioni spaziali delle patch nella WSI attraverso il Positional Encoding. Un Transformer Encoder modella le dipendenze tra tutte le patch tramite self-attention, permettendo di catturare relazioni tra patch distanti nella WSI. Il classification (CLS) token dell'Encoder contiene la rappresentazione globale della WSI.
@@ -73,5 +73,9 @@ Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performan
 
 ### Task 5:
 Visualizza gli attention weights a livello di patch del modello DSMIL.
+
+   Steps:
+   - Ogni 10 epoche di training del modello DSMIL, si visualizza una heatmap della prima WSI del set di testing.
+   - La heatmap è uno scatterplot che mostra le patch della WSI sotto forma di punti, colorati in base ai pesi di attenzione corrispondenti, i quali sono calcolati dopo una forward pass del modello sulla WSI. 
 
 
