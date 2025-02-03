@@ -90,6 +90,7 @@ Testa i diversi modelli MIL, confrontandone struttura, funzionamento e performan
 Visualizza gli attention weights a livello di patch del modello DSMIL.
 
    Steps:
+   - Disattivo il dropout per avere lo stesso numero di patches e attention weights.
    - Ogni 10 epoche di training del modello DSMIL, si visualizza una heatmap della prima WSI del set di testing.
    - La heatmap è uno scatterplot che mostra le patch della WSI sotto forma di punti, colorati in base ai pesi di attenzione corrispondenti, i quali sono calcolati dopo una forward pass del modello sulla WSI. 
 
